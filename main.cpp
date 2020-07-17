@@ -24,10 +24,9 @@ int is_depth;
 float z_pos=-10.0f;
 float rot=0.0f;
 
+const double pi = 3.141592653589793;
  void myTimeOut(int id)
 {
-// called if timer event
-// ...advance the state of animation incrementally...
        rot+=10;
        glutPostRedisplay(); // request redisplay
        glutTimerFunc(100, myTimeOut, 0); // request next timer event
@@ -52,56 +51,41 @@ int main(int argc, char** argv)
 	return 0;
 }
 
-void atap(int x1,int y1,int z1,int s,int p,int l,int t){
-	//bawah
+void sampah(int x1,int y1,int z1,int s,int p,int l,int t){
 	int x2 = x1+p;
 	int y2= y1;
 	int z2=z1;
-	glBegin(GL_QUADS);
-	glVertex3f(x1,y1,z1);
-	glVertex3f(x2,y2,z2);
-	glVertex3f(x2,y2,z2-l);
-	glVertex3f(x1,y1,z1-l);
-	glEnd();
 
-	//atas 
-	glBegin(GL_QUADS);
-	glVertex3f(x1+s,y1+t,z1-s);
-	glVertex3f(x2-s,y2+t,z2-s);
-	glVertex3f(x2-s,y2+t,z2-l+s);
-	glVertex3f(x1+s,y1+t,z1-l+s);
-	glEnd();
-	
 	//depan
 	glBegin(GL_QUADS);
 	glVertex3f(x1,y1,z1);
 	glVertex3f(x2,y2,z2);
-	glVertex3f(x2-s,y2+t,z2-s);
-	glVertex3f(x1+s,y1+t,z1-s);
+	glVertex3f(x2+s,y2+t,z2+s);
+	glVertex3f(x1-s,y1+t,z1+s);
 	glEnd();
 	
 	//belakang
 	glBegin(GL_QUADS);
 	glVertex3f(x1,y1,z1-l);
 	glVertex3f(x2,y2,z2-l);
-	glVertex3f(x2-s,y2+t,z2-l+s);
-	glVertex3f(x1+s,y1+t,z1-l+s);
+	glVertex3f(x2+s,y2+t,z2-l-s);
+	glVertex3f(x1-s,y1+t,z1-l-s);
 	glEnd();
 	
 	//samping kanan
 	glBegin(GL_QUADS);
 	glVertex3f(x2,y2,z2);
 	glVertex3f(x2,y2,z2-l);
-	glVertex3f(x2-s,y2+t,z2-l+s);
-	glVertex3f(x2-s,y2+t,z2-s);
+	glVertex3f(x2+s,y2+t,z2-l-s);
+	glVertex3f(x2+s,y2+t,z2+s);
 	glEnd();
 	
 	//samping kiri
 	glBegin(GL_QUADS);
 	glVertex3f(x1,y1,z1);
 	glVertex3f(x1,y1,z1-l);
-	glVertex3f(x1+s,y1+t,z1-l+s);
-	glVertex3f(x1+s,y1+t,z1-s);
+	glVertex3f(x1-s,y1+t,z1-l-s);
+	glVertex3f(x1-s,y1+t,z1+s);
 	glEnd();	
 		
 }
@@ -161,28 +145,41 @@ void kubus(int x1,int y1,int z1,int p,int l,int t){
 		
 }
 
-//void jendela(int x1,int y1,int z,int p,int t){
-//  for(int i=0;i<11;i++){
-//  	int sp=0;
-//  	x1+=sp;
-//	int x2 = x1+p;
-//	int y2= y1;
-//	glBegin(GL_QUADS);
-//	glVertex3f(x1,y1,z);
-//	glVertex3f(x2,y2,z);
-//	glVertex3f(x2,y2+t,z);
-//	glVertex3f(x1,y1+t,z);
-//	glEnd();
-//	sp+=5;
-//	  }
-//	
-//	
-//		
-//}
+void lingkaranh(float x_mid,float y,float z_mid, float r,float n,float rot){
+	float rotangle= rot*pi/180;
+	for(int i=1;i<=n;i++){
+		float x= x_mid + (r*cos((i*2*pi/n)+rotangle));
+		float z= z_mid + (r*sin((i*2*pi/n)+rotangle));
+		glVertex3f(x,y,z);
+	}
+
+}
+
+float titik1[20][2];
+float titik2[20][2];
+
+void lingkaransave(float x_mid,float z_mid, float r,float n,int p){
+	
+	for(int i=0;i<n;i++){
+		float x= x_mid + (r*cos(i*2*pi/n));
+		float z= z_mid + (r*sin(i*2*pi/n));
+		if (p==1){
+		titik1[i][0]= x;
+		titik1[i][1]= z;
+		}
+		else {
+		titik2[i][0]= x;
+		titik2[i][1]= z;
+		}
+		
+	}
+
+}
+
 
 void init(void)
 {
-	glClearColor(0.0, 0.0, 0.0, 0.0);
+	glClearColor(0.4823529411764706, 0.7176470588235294, 1,0);
 	glMatrixMode(GL_PROJECTION);
 
 	//fungsi ke belakang gelap
@@ -217,134 +214,315 @@ void tampil(void)
 	glRotatef(yrot, 0.0f, 1.0f, 0.0f);
 	
     //main building 1
-	glColor3f(0.95,0.40,0.20);
-	kubus(-400,-40,-20,500,100,40);
+	glColor3f(0.8117647058823529,0.3882352941176471,0.2156862745098039);
+	kubus(-400,-40,-220,500,100,40);
 	   //main sep 1
 	   glColor3f(0.95,0.9,0.85);
-   	   kubus(-400,0,-20,500,100,5);
+   	   kubus(-400,0,-220,500,100,5);
    	   
    	//main building 2
-	glColor3f(0.95,0.40,0.20);
-	kubus(-400,5,-20,500,100,30);
+	glColor3f(0.8117647058823529,0.3882352941176471,0.2156862745098039);
+	kubus(-400,5,-220,500,100,30);
 	    //main sep 2
 	   glColor3f(0.95,0.9,0.85);
-   	   kubus(-400,35,-20,500,100,5);
+   	   kubus(-400,35,-220,500,100,5);
    	   
-   	//main building 3
-	glColor3f(0.95,0.40,0.20);
-	kubus(-400,40,-20,500,100,30);
+   	//main building 3	
+	glColor3f(0.8117647058823529,0.3882352941176471,0.2156862745098039);
+	kubus(-400,40,-220,500,100,30);
 	    //main sep 3
 	    glColor3f(0.95,0.9,0.85);
-   	   kubus(-400,70,-20,500,100,5);
+   	   kubus(-400,70,-220,500,100,5);
    	   
 				   	//mainside1
-				   	glColor3f(0.95,0.40,0.20);
-					kubus(0,75,-20,100,100,15);
+				   	glColor3f(0.8117647058823529,0.3882352941176471,0.2156862745098039);
+					kubus(0,75,-220,100,100,15);
 					   //mainside sep 1
 					   glColor3f(0.95,0.9,0.85);
-				   	   kubus(0,90,-20,100,100,1);
+				   	   kubus(0,90,-220,100,100,1);
 				   	   
 				   	//mainside2
-				   	 glColor3f(0.95,0.40,0.20);
-					kubus(0,91,-20,100,100,4);
+				   	glColor3f(0.8117647058823529,0.3882352941176471,0.2156862745098039);
+					kubus(0,91,-220,100,100,4);
 					  //mainside sep 2
 					    glColor3f(0.95,0.9,0.85);
-				   	   kubus(0,95,-20,100,100,1);
+				   	   kubus(0,95,-220,100,100,1);
 				   	   
 				   	   int yy=0;
 				   	   for(int j=0;j<=2;j++){
 				   	   	int sp=0;
 				   	   	for(int i=0;i<=11;i++){
 				   	   	glColor3f(0.95,0.9,0.85);
-				     	kubus(5+sp,-30+yy,-19,5,1.5,20);
+				     	kubus(5+sp,-30+yy,-219,5,1.5,20);
 						sp+=8;  }
 						yy+=39;
 						  }
-				   	   
-				     	
-				     
-				     
-				   
-				   	
+		   	
 	//mainbuilding 4
-   	glColor3f(0.95,0.40,0.20);
-	kubus(-400,75,-20,400,100,25);
+   	glColor3f(0.8117647058823529,0.3882352941176471,0.2156862745098039);
+	kubus(-400,75,-220,400,100,25);
 	 //main sep 4
 	    glColor3f(0.95,0.9,0.85);
-   	   kubus(-400,100,-20,400,100,5);
+   	   kubus(-400,100,-220,400,100,5);
    	   
    	//mainbuilding 5
-     glColor3f(0.95,0.40,0.20);
-	kubus(-400,105,-20,400,100,30);
+    glColor3f(0.8117647058823529,0.3882352941176471,0.2156862745098039);
+	kubus(-400,105,-220,400,100,30);
 	 //main sep 5
 	   glColor3f(0.95,0.9,0.85);
-   	   kubus(-400,135,-20,400,100,5);
+   	   kubus(-400,135,-220,400,100,5);
   	   
    	     //roof1
-	     glColor3f(1,1,1);
-   	     kubus(-70,98,100,75,120,12);
+	     glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+   	     kubus(-70,98,-100,75,120,12);
 	   	     //pil1
-		     glColor3f(1,1,1);
-	   	     kubus(-5,-40,100,10,10,150);
+	   	     kubus(-5,-40,-100,10,10,150);
 	   	     //pil2
-		     glColor3f(1,1,1);
-	   	     kubus(-5,-40,80,10,10,150);
+	   	     kubus(-5,-40,-120,10,10,150);
 	   	     //-1
-	   	     glColor3f(1,1,1);
-	   	     kubus(-5,60,90,10,10,10);
+	   	     kubus(-5,60,-110,10,10,10);
 	   	      //-2
-	   	     glColor3f(1,1,1);
-	   	     kubus(-5,20,90,10,10,10);
+	   	     kubus(-5,20,-110,10,10,10);
 	   	     //pilb
-	   	     glColor3f(1,1,1);
-	   	       kubus(-70,-40,100,10,30,150);
-	   	     
-	   	     
-	   	     
-	   	     
+	   	       kubus(-70,-40,-100,10,30,150);
 	    //roof2
-	     glColor3f(1,1,1);
-     	   kubus(-180,98,100,75,120,12);
+     	   kubus(-180,98,-100,75,120,12);
      	     //pila
-	   	     glColor3f(1,1,1);
-	   	       kubus(-115,-40,100,10,30,150);
+	   	       kubus(-115,-40,-100,10,30,150);
      	     //pilb
-	   	     glColor3f(1,1,1);
-	   	       kubus(-180,-40,100,10,30,150);
+	   	       kubus(-180,-40,-100,10,30,150);
    	   //rooffbawah
-	   glColor3f(1,1,1);
-	   kubus(-215,5,100,35,120,6);
+	   kubus(-215,5,-100,35,120,6);
    	    //roof3
-	  glColor3f(1,1,1);
-   	   kubus(-290,98,100,75,120,12);
+   	   kubus(-290,98,-100,75,120,12);
    	   //pila
-	   	     glColor3f(1,1,1);
-	   	       kubus(-290,-40,100,10,30,150);
+	   	       kubus(-290,-40,-100,10,30,150);
      	     //pilb
-	   	     glColor3f(1,1,1);
-	   	       kubus(-225,-40,100,10,30,150);
+	   	       kubus(-225,-40,-100,10,30,150);
   	    //roof4
-	    glColor3f(1,1,1);
-  	   kubus(-400,98,100,75,120,12);
+  	   kubus(-400,98,-100,75,120,12);
   	   //pila
-	   	     glColor3f(1,1,1);
-	   	       kubus(-400,-40,100,10,30,150);
+	   	       kubus(-400,-40,-100,10,30,150);
      	     //pilb
-	   	     glColor3f(1,1,1);
-	   	       kubus(-335,-40,100,10,30,150);
+	   	       kubus(-335,-40,-100,10,30,150);
+	//tanah
+	glColor3f(0.6196078431372549,0.5294117647058824,0.3529411764705882);
+    kubus(-450,-80,20,700,400,39.9);
 	
-   	   
+	//struktur tanah bawah
+	glColor3f(0.7098039215686275,0.6470588235294118,0.607843137254902);
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-40,-90,50,20,0);
+	glEnd();
 	
-		//tanah
+	lingkaransave(120,-90,55,20,1);
+	lingkaransave(120,-90,90,20,2);
+
+	// tanah melingkar 
+	for(int i=0;i<5;i++){
+		int a=0;
+		glBegin(GL_POLYGON);
+		for(int j=4*i;j<=(4*i)+3;j++){
+			glVertex3f(titik1[j][0],-40,titik1[j][1]);
+		}
+		for(int j=4*i;j<=(4*i)+3;j++){
+			glBegin(GL_POLYGON);
+			glVertex3f(titik2[(4*i)+3-a][0],-40,titik2[(4*i)+3-a][1]);
+			a++;
+		}
+		glEnd();
+	}
+	
+	//lingkaran merah taman
+	glColor3f(0.6431372549019608,0.1686274509803922,0.0549019607843137);
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-39.9,-90,30,20,0);
+	lingkaranh(120,-30,-90,30,20,180);
+	glEnd();
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-39.9,-90,30,20,180);
+	lingkaranh(120,-30,-90,30,20,0);
+	glEnd();
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-39.9,-90,30,20,270);
+	lingkaranh(120,-30,-90,30,20,90);
+	glEnd();
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-39.9,-90,30,20,90);
+	lingkaranh(120,-30,-90,30,20,270);
+	glEnd();
+	
+	//rumput atas lingkar merah
+	glColor3f(0.5137254901960784,1,0.2);
+	glTranslatef(120,-45,-90);
+    glutSolidSphere(25,10,10);
+	glTranslatef(-120,45,40);
+	//rumput kecil atasnya lagi
+	glColor3f(0.5137254901960784,0.8,0.2);
+	glTranslatef(105,-25,-40);
+    glutSolidSphere(7,10,10);
+	glTranslatef(-105,25,40);
+	glTranslatef(115,-25,-25);
+    glutSolidSphere(7,10,10);
+	glTranslatef(-115,25,25);
+	glTranslatef(130,-25,-40);
+    glutSolidSphere(7,10,10);
+	glTranslatef(-130,25,40);
+	glTranslatef(120,-25,-50);
+    glutSolidSphere(7,10,10);
+	glTranslatef(-120,25,50);
+	//tongkat senter di keliling lingkaran
+	glColor3f(0,0,0);
+	kubus(175,-40, -25, 2,2,10);
+	kubus(163,-40, -5, 2,2,10);
+	kubus(100,-40, 15, 2,2,10);
+	kubus(120,-40, 17, 2,2,10);
+	kubus(65,-40, -40, 2,2,10);
+	kubus(70,-40, -20, 2,2,10);
+	kubus(80,-40, -85, 2,2,10);
+	kubus(100,-40, -95, 2,2,10);
+	kubus(150,-40, -85, 2,2,10);
+	kubus(168,-40, -65, 2,2,10);
+	
+	//rumput hijau
+	glColor3f(0.5137254901960784,0.8,0.2);
+	glTranslatef(95,-35,30);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-95,35,-30);
+	glTranslatef(125,-35,32);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-125,35,-32);
+	glTranslatef(190,-35,-20);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-12,0,28);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-178,35,-8);
+	glTranslatef(97,-35,-110);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-97,35,110);
+	glTranslatef(72,-35,-100);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-72,35,100);
+	glTranslatef(160,-35,-100);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-160,35,100);	
+	glTranslatef(180,-35,-80);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-180,35,80);	
+	glTranslatef(50,-35,-15);
+    glutSolidSphere(10,10,10);
+	glTranslatef(-50,35,15);	
+	glTranslatef(47,-35,-50);
+    glutSolidSphere(10,10,10);
+	glTranslatef(47,35,50);	
+	
+		
+	//tanah kiri1
+	glColor3f(0.7098039215686275,0.6470588235294118,0.607843137254902);
+	kubus(-165,-40,0,75,50,1);
+	//tempat sampah
+	glColor3f(1,1,0);
+	sampah(-150,-40,-15,5,10,20,25);
+	glColor3f(0,0,0);
+	sampah(-149,-40,-15,5,12,22,27);
+	glColor3f(1,0,1);
+	sampah(-115,-40,-15,5,10,20,25);
+	glColor3f(0,0,0);
+	sampah(-114,-40,-15,5,12,22,27);
+	
+	//tanah kiri2
+	glColor3f(0.7098039215686275,0.6470588235294118,0.607843137254902);
+	kubus(-275,-40,0,75,50,1);
+    //pohon
+	glColor3f(0.5137254901960784,1,0.2);
+	glTranslatef(-250,5,-20);
+    glutSolidSphere(15,50,10);
+	glTranslatef(250,-5,20);   
+    glTranslatef(-250,20,-20);
+    glutSolidSphere(10,50,10);
+	glTranslatef(250,-20,20);   
+    glTranslatef(-260,8,-20);
+    glutSolidSphere(10,50,10);
+	glTranslatef(260,-8,20);    
+    glTranslatef(-245,0,-30);
+    glutSolidSphere(10,50,10);
+	glTranslatef(260,-3,20);  
+    //tongkat
+    glColor3f(0.5,0.3,0.2);
+    kubus(-270,-39,-10,5,5,35);
     
-    kubus(-400,-80,200,600,400,39.9);
-	
+    glTranslatef(30,0,0);
+    glColor3f(0.7098039215686275,0.6470588235294118,0.607843137254902);
+	kubus(-275,-40,0,75,50,1);
+    //pohon
+	glColor3f(0.5137254901960784,1,0.2);
+	glTranslatef(-250,5,-20);
+    glutSolidSphere(15,50,10);
+	glTranslatef(250,-5,20);   
+    glTranslatef(-250,20,-20);
+    glutSolidSphere(10,50,10);
+	glTranslatef(250,-20,20);   
+    glTranslatef(-260,8,-20);
+    glutSolidSphere(10,50,10);
+	glTranslatef(260,-8,20);    
+    glTranslatef(-245,0,-30);
+    glutSolidSphere(10,50,10);
+	glTranslatef(260,-3,20);  
+    //tongkat
+    glColor3f(0.5,0.3,0.2);
+    kubus(-270,-39,-10,5,5,35);
+    glTranslatef(-30,0,0);
+    
+    glTranslatef(-610,6,120);
+    //tanah4
+    glColor3f(0.7098039215686275,0.6470588235294118,0.607843137254902);
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-40,-90,50,20,0);
+	glEnd();
+    //lingkaran merah taman
+	glColor3f(0.6431372549019608,0.1686274509803922,0.0549019607843137);
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-39.9,-90,30,20,0);
+	lingkaranh(120,-30,-90,30,20,180);
+	glEnd();
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-39.9,-90,30,20,180);
+	lingkaranh(120,-30,-90,30,20,0);
+	glEnd();
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-39.9,-90,30,20,270);
+	lingkaranh(120,-30,-90,30,20,90);
+	glEnd();
+	glBegin(GL_POLYGON);
+	lingkaranh(120,-39.9,-90,30,20,90);
+	lingkaranh(120,-30,-90,30,20,270);
+	glEnd();
+    //rumput atas lingkar merah
+	glColor3f(0.5137254901960784,1,0.2);
+	glTranslatef(120,-45,-90);
+    glutSolidSphere(25,10,10);
+	glTranslatef(-120,45,40);
+	//rumput kecil atasnya lagi
+	glColor3f(0.5137254901960784,0.8,0.2);
+	glTranslatef(105,-25,-40);
+    glutSolidSphere(7,10,10);
+	glTranslatef(-105,25,40);
+	glTranslatef(115,-25,-25);
+    glutSolidSphere(7,10,10);
+	glTranslatef(-115,25,25);
+	glTranslatef(130,-25,-40);
+    glutSolidSphere(7,10,10);
+	glTranslatef(-130,25,40);
+	glTranslatef(120,-25,-50);
+    glutSolidSphere(7,10,10);
+	glTranslatef(-120,25,50);
+    
+    
+	//animasi atas
 	glRotatef(rot, 0, 1, 0);
-	
 	glColor3f(u,p,q);
-	kubus(20,150,20,60,20,39.9);
-
-
+	kubus(20,200,-180,60,20,39.9);
+	
 	glPopMatrix();
 	
 	glutSwapBuffers();
@@ -458,7 +636,7 @@ void ukuran(GLsizei lebar, GLsizei tinggi)
 	glViewport(0,0,lebar,tinggi);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluPerspective(50.0, lebar / tinggi, 5.0, 500.0);
+	gluPerspective(50.0, lebar / tinggi, 5.0, 1000.0);
 	glTranslatef(0.0, -5.0, -150.0);
 	glMatrixMode(GL_MODELVIEW);
 }
