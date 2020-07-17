@@ -6,7 +6,10 @@
 #endif
 #include <stdlib.h>
 #include <math.h>
-
+#define DEF_D 5
+#define Cos(th) cos(PI/180*(th))
+#define Sin(th) sin(PI/180*(th))
+#define PI 3.1415926535898
 void init(void);
 void tampil(void);
 void keyboard(unsigned char, int, int);
@@ -27,7 +30,7 @@ float rot=0.0f;
 const double pi = 3.141592653589793;
  void myTimeOut(int id)
 {
-       rot+=10;
+       rot+=1;
        glutPostRedisplay(); // request redisplay
        glutTimerFunc(100, myTimeOut, 0); // request next timer event
 }
@@ -176,6 +179,19 @@ void lingkaransave(float x_mid,float z_mid, float r,float n,int p){
 
 }
 
+void selimut(float x,float y, float z,float r,float t){
+       	
+   
+	 for (int j=0;j<=400;j+=DEF_D) {
+	
+		glVertex3f(r*Cos(j)+x,t,r*Sin(j)+z);
+	    glVertex3f(r*Cos(j)+x,y,r*Sin(j)+z);
+		}
+	
+}
+
+		
+
 
 void init(void)
 {
@@ -193,10 +209,15 @@ void init(void)
 	glPointSize(9.0);
 	glLineWidth(6.0f);
 	is_depth = 1;
+	
+	
+	
 }
 
 void tampil(void)
-{  float u = ((float)rand()/(float)(RAND_MAX)) * 1;
+{  
+
+	float u = ((float)rand()/(float)(RAND_MAX)) * 1;
     float p = ((float)rand()/(float)(RAND_MAX)) * 1;
      float q = ((float)rand()/(float)(RAND_MAX)) * 1;
 	glPushMatrix();
@@ -257,6 +278,82 @@ void tampil(void)
 						sp+=8;  }
 						yy+=39;
 						  }
+						  	
+						  	//jendelaa biru
+					    int yo=0;
+				   	   for(int j=0;j<=1;j++){
+				   	   	int sp=0;
+				   	   	for(int i=0;i<=15;i++){
+				   	   	glColor3f(0.4823529411764706, 0.7176470588235294, 1);
+				     	kubus(-400+sp,9+yo,-219,20,1.5,20);
+						sp+=25;  }
+						yo+=39;
+						  }
+						  	
+						  	
+						  	
+			//pilarselimut			  	
+		glBegin(GL_QUAD_STRIP);
+     	glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+	    selimut(-15,-40,-155,3,100);
+		glEnd();
+		
+		glBegin(GL_QUAD_STRIP);
+     	glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+	    selimut(-15,-40,-175,3,100);
+		glEnd();
+			
+		glBegin(GL_QUAD_STRIP);
+     	glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+	    selimut(-15,-40,-200,3,100);
+		glEnd();
+		
+		glBegin(GL_QUAD_STRIP);
+     	glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+	    selimut(-55,-40,-155,3,100);
+		glEnd();
+		
+		glBegin(GL_QUAD_STRIP);
+     	glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+	    selimut(-55,-40,-175,3,100);
+		glEnd();
+			
+		glBegin(GL_QUAD_STRIP);
+     	glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+	    selimut(-55,-40,-200,3,100);
+		glEnd();
+		//lantai
+			glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+		kubus(-400,-40,-100,330,120,1);
+						  	
+//	glBegin(GL_POLYGON);
+//	lingkaranh(200,-39.9,-90,30,20,0);
+//	
+//	lingkaranh(200,-30,-90,30,20,0);
+//	glEnd();
+						        
+							
+//								
+//		glBegin(GL_QUAD_STRIP);
+//	
+//		 glEnd();
+				
+								
+//								    /* top and bottom circles */
+//								    /* reuse the currentTexture on top and bottom) */
+//								    for (int i=1;i>=-1;i-=2) {
+//								      glBegin(GL_TRIANGLE_FAN);
+//								      glColor3f(0.0,0.0,1.0);
+//								      glVertex3f(100,100,100);
+//								      for (int k=0;k<=360;k+=DEF_D) {
+//									glColor3f(1.0,0.0,0.0);
+//									glVertex3f(i*Cos(k),i,Sin(k));
+//								      }
+//								      glEnd();
+//								    }
+								  
+						  
+						  
 		   	
 	//mainbuilding 4
    	glColor3f(0.8117647058823529,0.3882352941176471,0.2156862745098039);
@@ -285,6 +382,71 @@ void tampil(void)
 	   	     kubus(-5,20,-110,10,10,10);
 	   	     //pilb
 	   	       kubus(-70,-40,-100,10,30,150);
+	   	       
+	   	       //roofup1
+	   	       glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+   	           kubus(-105,98,-50,35,170,12);
+   	           //pilar
+   	           glBegin(GL_QUAD_STRIP);
+            	glColor3f(0.9058823529411765,0.9058823529411765,0.9);
+	           selimut(-90,-40,-70,3,100);
+	         	glEnd();
+	         	//pilkanan kecil
+	         	glBegin(GL_QUAD_STRIP);
+            	glColor3f(0.8,0.8,0.8);
+	            selimut(-72,-40,-53,1,100);
+	         	glEnd();
+	         	glBegin(GL_QUAD_STRIP);
+            	glColor3f(0.8,0.8,0.8);
+	            selimut(-72,-40,-80,1,100);
+	         	glEnd();
+	         	//pilkiri kecil
+	         	
+	         	glBegin(GL_QUAD_STRIP);
+            	glColor3f(0.8,0.8,0.8);
+	            selimut(-103,-40,-53,1,100);
+	         	glEnd();
+	            //1
+	         	kubus(-104,80,-53,2,50,2);
+	         	kubus(-104,70,-53,2,50,2);
+	         	
+	         	kubus(-73,80,-53,2,50,2);
+	         	kubus(-73,70,-53,2,50,2);
+	         	
+	         	kubus(-104,80,-53,31,1,2);
+	         	kubus(-104,70,-53,31,1,2);
+	         	//2
+	         	kubus(-104,50,-53,2,50,2);
+	         	kubus(-104,40,-53,2,50,2);
+	         	
+	         	kubus(-73,50,-53,2,50,2);
+	         	kubus(-73,40,-53,2,50,2);
+	         	
+	         	kubus(-104,50,-53,31,1,2);
+	         	kubus(-104,40,-53,31,1,2);
+	         	
+	            //3
+	         	kubus(-104,20,-53,2,50,2);
+	         	kubus(-104,10,-53,2,50,2);
+	         	
+	         	kubus(-73,20,-53,2,50,2);
+	         	kubus(-73,10,-53,2,50,2);
+	         	
+	         	kubus(-104,20,-53,31,1,2);
+	         	kubus(-104,10,-53,31,1,2);
+	         	//4
+	         	
+	         	kubus(-104,-10,-53,2,50,2);
+	         	kubus(-104,-20,-53,2,50,2);
+	         	
+	         	kubus(-73,-10,-53,2,50,2);
+	         	kubus(-73,-20,-53,2,50,2);
+	         	
+	         	kubus(-104,-10,-53,31,1,2);
+	         	kubus(-104,-20,-53,31,1,2);
+   	           
+   	           
+   	           glColor3f(0.9058823529411765,0.9058823529411765,0.9);
 	    //roof2
      	   kubus(-180,98,-100,75,120,12);
      	     //pila
@@ -292,7 +454,12 @@ void tampil(void)
      	     //pilb
 	   	       kubus(-180,-40,-100,10,30,150);
    	   //rooffbawah
-	   kubus(-215,5,-100,35,120,6);
+	   kubus(-215,5,-50,35,60,6);
+			//pila
+			kubus(-215,-40,-50,5,10,51);
+			 //pilb
+	   		kubus(-185,-40,-50,5,10,51);
+	   
    	    //roof3
    	   kubus(-290,98,-100,75,120,12);
    	   //pila
@@ -305,6 +472,17 @@ void tampil(void)
 	   	       kubus(-400,-40,-100,10,30,150);
      	     //pilb
 	   	       kubus(-335,-40,-100,10,30,150);
+	   	       
+	   	       
+	   	       
+	   	//pilsamping
+	   	  glColor3f(1,0.9058823529411765,0.9);
+	   	    kubus(100,-40,-230,10,10,150);
+	   	    kubus(100,-40,-260,10,10,150);
+	   	    
+	   	    kubus(100,20,-230,10,30,10);
+	   	     kubus(100,50,-230,10,30,10);
+	   	     kubus(100,95,-230,10,30,15);
 	//tanah
 	glColor3f(0.6196078431372549,0.5294117647058824,0.3529411764705882);
     kubus(-450,-80,20,700,400,39.9);
@@ -516,13 +694,18 @@ void tampil(void)
 	glTranslatef(120,-25,-50);
     glutSolidSphere(7,10,10);
 	glTranslatef(-120,25,50);
+    //matahari
     
+   
     
 	//animasi atas
-	glRotatef(rot, 0, 1, 0);
-	glColor3f(u,p,q);
-	kubus(20,200,-180,60,20,39.9);
+	glRotatef(rot, 0, 0, 200);
+	glColor3f(1,1,0);
+//	kubus(800,200,-180,60,20,39.9);
 	
+	glTranslatef(120,300,-500);
+    glutSolidSphere(100,100,100);
+	glTranslatef(-120,105,40);
 	glPopMatrix();
 	
 	glutSwapBuffers();
