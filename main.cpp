@@ -455,6 +455,9 @@ void tampil(void)
 	   	       kubus(-180,-40,-100,10,30,150);
    	   //rooffbawah
 	   kubus(-215,5,-50,35,60,6);
+	   //pintu
+
+	     kubus(-210,-40.5,-219.5,20,1,30);
 			//pila
 			kubus(-215,-40,-50,5,10,51);
 			 //pilb
@@ -697,7 +700,18 @@ void tampil(void)
     //matahari
     
    
-    
+    //tempat parkir
+    glColor3f(0.1,0.1,0.1);
+    //tanahnya
+    kubus(90,-40,-320,640,50,1);
+    kubus(610,-40,-200,120,120,1);
+    glColor3f(1,1,0);
+    //tiang kuning
+     kubus(612,-38.9,-200,2,2,15);
+      kubus(725,-38.9,-200,2,2,15);
+       kubus(725,-38.9,-365,2,2,15);
+       kubus(95,-38.9,-366,2,2,15);
+        kubus(95,-38.9,-323,2,2,15);
 	//animasi atas
 	glRotatef(rot, 0, 0, 200);
 	glColor3f(1,1,0);
