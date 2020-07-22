@@ -10,6 +10,7 @@
 #define Cos(th) cos(PI/180*(th))
 #define Sin(th) sin(PI/180*(th))
 #define PI 3.1415926535898
+#include <stdio.h>
 
 //Deklarasi Fungsi
 void init(void);
@@ -28,6 +29,29 @@ bool mouseDown = false;
 int is_depth;
 float z_pos=-10.0f;
 float rot=0.0f;
+
+
+float m1,c1,m2,c2,x,y;
+void cari1 (float x1,float x2,float y1,float y2){
+m1=(y2-y1)/(x2-x1);
+c1=y1-(m1*x1);
+}
+void cari2 (float x1,float x2,float y1,float y2){
+m2=(y2-y1)/(x2-x1);
+c2=y1-(m2*x1);
+}
+void hasil (){
+x=(c2-c1)/(m1-m2);
+y=(m2*x)+c2;
+//printf("%f\n",c1);
+}
+
+
+
+
+
+
+
 
 const double pi = 3.141592653589793;
  void myTimeOut(int id)
@@ -748,7 +772,49 @@ void tampil(void)
        kubus(725,-38.9,-365,2,2,15);
        kubus(95,-38.9,-366,2,2,15);
         kubus(95,-38.9,-323,2,2,15);
+
+
         
+        
+        //tipong
+			float ax=413.4, ay=-39.9, az=-40,
+			      bx=413, by=-39.9, bz=-100,
+			      
+			      ex=410, ey=-39.9, ez=-47,
+			      fx=495, fy=-39.9, fz=-47,
+			      
+			      gx=493.4, gy=-39.9, gz=-40,
+			      hx=493, hy=-39.9, hz=-100;
+			      
+			glBegin(GL_LINES);
+			glColor3f(0.00,0.00,0.00);
+			glVertex3f(ax,ay,az);
+			glVertex3f(bx,by,bz);
+			glVertex3f(ex,ey,ez);
+			glVertex3f(fx,fy,fz);
+			glVertex3f(gx,gy,gz);
+			glVertex3f(hx,hy,hz);
+			glEnd();
+			
+			glBegin(GL_POINTS);
+			//pot ab ef
+			cari1(ax,bx,az,bz);
+			cari2(ex,fx,ez,fz);
+			hasil();
+			glColor3f(1.00,1.00,1.00);
+			glVertex3f(x,ay+0.1,y);
+			glEnd();
+			
+			glBegin(GL_POINTS);
+			//pot gh ef
+			cari1(gx,hx,gz,hz);
+			cari2(ex,fx,ez,fz);
+			hasil();
+			glColor3f(1.00,1.00,1.00);
+			glVertex3f(x,ay+0.1,y);
+			glEnd();
+
+
 	//matahari animasi
 	glRotatef(rot, 0, 0, 200);
 	glColor3f(1,1,0);
